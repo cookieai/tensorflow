@@ -56,6 +56,22 @@ public final class Session implements AutoCloseable {
     }
   }
 
+  /** Wrap an existing session with the associated {@link Graph}. */
+  Session(Graph g, long nativeHandle) {
+    graph = g;
+    try (Graph.Reference r = g.ref()) {
+      this.nativeHandle = nativeHandle;
+      graphRef = g.ref();
+    }
+  }
+
+  /**
+   * Gets the graph associated with the session.
+   */
+  public Graph graph() {
+    return graph;
+  }
+
   /**
    * Release resources associated with the Session.
    *
